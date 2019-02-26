@@ -1,5 +1,5 @@
 {
-  "name": "fake-backend",
+  "name": "fake-gateway",
   "version": "1.0.0",
   "dependencies": {
     "body-parser": "^1.18.3",

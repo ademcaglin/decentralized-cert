@@ -1,0 +1,14 @@
+{
+  "name": "fake-gateway",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha tests/node-test.js"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^6.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
