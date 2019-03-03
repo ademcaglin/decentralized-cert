@@ -1,1 +1,0 @@
-An application to store issuers

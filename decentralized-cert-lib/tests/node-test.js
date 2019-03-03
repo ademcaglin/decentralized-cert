@@ -1,1 +1,0 @@
-require('./certificate-test.js');

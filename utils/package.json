@@ -5,7 +5,7 @@
     "test": "mocha tests/node-test.js"
   },
   "devDependencies": {
-    "expect.js": "^0.3.1",
+    "chai": "^4.2.0",
     "mocha": "^6.0.2"
   },
   "dependencies": {
