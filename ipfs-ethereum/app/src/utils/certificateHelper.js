@@ -34,8 +34,10 @@ async function getCertificateData(buffer){
     let iv = hash.slice(0, 16);
     let encrypted = await crypto.subtle.encrypt({name: "aes-ctr", counter: iv, length: 128}, key, buffer);
     return {
-        hash: hahs,
+        hash: hash,
         encrypted: encrypted,
         hash2: hash2
     };
 }
+
+export {getCertificateData, str2ab,ab2str, bufferToHex};

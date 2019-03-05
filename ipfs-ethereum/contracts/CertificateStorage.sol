@@ -1,32 +1,43 @@
 pragma solidity >=0.4.21 <0.6.0;
 
 contract CertificateStorage {
-  struct Issuer {
-        string name; 
+  /*struct IssuerAuthority {
+        uint created_at;
+        string title; 
   }
-  struct Signer {
-        address addr;
+  struct Issuer {
         uint created_at;
         uint disabled_at; 
         string title; 
+        address authority;
   }
-  struct Certificate {
-        address addr;
-        uint created_at;  
-        string ipfs_addr; 
+  
+  struct Signer {
+        uint created_at;
+        uint disabled_at; 
         string title; 
+        address issuer;
+  }*/
+
+ struct Certificate {
+        address signer;
+        uint created_at; 
+        uint disabled_at;  
+        bytes32 ipfs_hash; 
+        bytes2 ipfs_alg;
   }
   
   mapping(bytes32 => Certificate)  public certificates;
 
-  function createCertificate(bytes32 id, string memory ipfs_addr) public {
-        Certificate storage sender = certificates[id];
-        sender.addr = msg.sender;
-        sender.created_at = now;
-        sender.ipfs_addr = ipfs_addr;
+  function createCertificate(bytes32 id, bytes2 ipfs_alg, bytes32 ipfs_hash) public {
+        Certificate storage cer = certificates[id];
+        cer.signer = msg.sender;
+        cer.created_at = now;
+        cer.ipfs_hash = ipfs_hash;
+        cer.ipfs_alg = ipfs_alg;
   }
   
-  function getCertificate(bytes32 id)public view returns(address,uint,string memory){
-      return(certificates[id].addr, certificates[id].created_at, certificates[id].ipfs_addr);
+  function getCertificate(bytes32 id)public view returns(address,uint,bytes32,bytes2){
+      return(certificates[id].signer, certificates[id].created_at, certificates[id].ipfs_hash, certificates[id].ipfs_alg);
   }
 }
