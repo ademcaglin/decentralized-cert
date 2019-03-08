@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { str2ab, getCertificateData, ab2str, bufferToHex } from '../utils/certificateHelper';
+import { str2ab, getCertificateData, ab2str, bufferToHex, ab2base64, decryptFile } from '../utils/certificateHelper';
 import { Button } from '@material-ui/core';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
@@ -9,6 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 export default () => {
     const [pageNumber, setPageNumber] = useState(1);
     const [file, setFile] = useState("sample.pdf");
+
     function toArrayBuffer(buf) {
         var ab = new ArrayBuffer(buf.length);
         var view = new Uint8Array(ab);
@@ -17,23 +18,44 @@ export default () => {
         }
         return ab;
     }
-    function handleFileChange(files) {
-        let fileReader = new FileReader();
-        fileReader.readAsArrayBuffer(files[0]);
-        fileReader.onload = function () {
-           let buffer = fileReader.result;
-           let x = getCertificateData(buffer).then(x =>{
-            ipfs.add(toArrayBuffer(x.encrypted), (err, result) => {
+    
+    const readUploadedFileAsArrayBuffer = inputFile => {
+        const temporaryFileReader = new FileReader();
+    
+        return new Promise((resolve, reject) => {
+          temporaryFileReader.onerror = () => {
+            temporaryFileReader.abort();
+            reject(new DOMException("Problem parsing input file."));
+          };
+    
+          temporaryFileReader.onload = () => {
+            resolve(temporaryFileReader.result);
+          };
+          temporaryFileReader.readAsArrayBuffer(inputFile);
+        });
+      };
+
+    async function handleFileChange(inputFiles) {
+        let buffer = await readUploadedFileAsArrayBuffer(inputFiles[0]);
+        console.log(buffer);
+        let x = await getCertificateData(buffer);
+        let content = ipfs.types.Buffer.from(x.encrypted);
+        ipfs.add(content, (err, result) => {
+            if (err) {
+                throw err
+            }
+            //console.log(result);
+            ipfs.get(result[0].hash, (err, files) =>{
                 if (err) {
                     throw err
                 }
-                console.log(result);
+                decryptFile(files[0].content, x.hash).then(dec=>console.log(dec)); 
             });
-           });
-        };
-       
-        setFile(files[0]);
+        });
+        //console.log(ab2base64(x.encrypted));
+        setFile(inputFiles[0]);
     }
+
     return (<div>
         <Button variant="contained" component="label">
             Upload File

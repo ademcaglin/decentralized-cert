@@ -40,4 +40,11 @@ async function getCertificateData(buffer){
     };
 }
 
-export {getCertificateData, str2ab,ab2str, bufferToHex};
+async function decryptFile(encrpted, hash){
+    let key = await crypto.subtle.importKey("raw", hash, "aes-ctr", false, ["decrypt"]);
+    let iv = hash.slice(0, 16);
+    let file = await crypto.subtle.decrypt({name: "aes-ctr", counter: iv, length: 128}, key, encrpted);
+    return file;
+}
+
+export {getCertificateData, str2ab,ab2str, bufferToHex, ab2base64, base642ab, decryptFile};
