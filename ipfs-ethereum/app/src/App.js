@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import List from './components/List';
 import Create from './components/Create';
-import Verify from './components/Verify';
 import Layout from './components/Layout';
 import { Route, Switch } from 'react-router-dom';
 /*import {Drizzle, generateStore} from 'drizzle';
@@ -35,7 +34,6 @@ export default () => (
         <Switch>
           <Route exact path='/' component={List} />
           <Route path='/create' component={Create} />
-          <Route path='/verify' component={Verify} />
         </Switch>
       </Layout>
 )

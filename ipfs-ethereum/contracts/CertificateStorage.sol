@@ -44,7 +44,8 @@ contract CertificateStorage {
     }
 
     function createCertificate(bytes32 id, bytes32 ipfs_hash, uint created_at) public {
-        require((now > (created_at + 1 days)) || (now < created_at), "The created_at is not valid.");
+        require(now < (created_at + 1 days), "The created_at + 1 should be greater than now .");
+        require((now + 10 minutes) > created_at, "The created_at should be less than now .");
         Signer memory signer = signers[msg.sender];
         require(signer.issuer == stringToBytes32("DECENTRALIZED_ISSUER"), "The signer issuer should be ss");
         require(signer.created_at != 0, "The signer created_at is zero");

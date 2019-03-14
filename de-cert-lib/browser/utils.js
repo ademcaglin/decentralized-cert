@@ -43,7 +43,7 @@ async function getEncryptedArrayBuffer(arrayBuffer){
     let key = await crypto.subtle.importKey("raw", hash, "aes-ctr", false, ["encrypt"]);
     let iv = hash.slice(0, 16);
     let encrypted = await crypto.subtle.encrypt({name: "aes-ctr", counter: iv, length: 128}, key, arrayBuffer);
-    return encrypted;
+    return {encrypted: encrypted, hash: hash};
 }
 
 async function getDecryptedArrayBuffer(hash, encrpted){
@@ -52,3 +52,5 @@ async function getDecryptedArrayBuffer(hash, encrpted){
     let content = await crypto.subtle.decrypt({ name: "aes-ctr", counter: iv, length: 128 }, key, encrpted);
     return content;
 }
+
+export { ab2base64, base642ab, bufferToHex, readUploadedFileAsArrayBuffer, toArrayBuffer, getEncryptedArrayBuffer, getDecryptedArrayBuffer };
