@@ -1,11 +1,23 @@
-import React, { Component, useState } from "react";
-import { ab2base64, base642ab, bufferToHex, readUploadedFileAsArrayBuffer, toArrayBuffer, getEncryptedArrayBuffer, getDecryptedArrayBuffer } from 'de-cert-lib/utils';
-import { addToIpfs } from 'de-cert-lib/ipfsHelper';
+import React, { useContext, useState } from "react";
+import { withStyles } from '@material-ui/core/styles';
+import { buffer2hex, base582hex } from '../utils/baseUtils';
+import { addToIpfs } from '../utils/ipfsUtils';
+import readUploadedFileAsArrayBuffer from '../utils/fileUtils';
 import { Button } from '@material-ui/core';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 import ipfsClient from 'ipfs-http-client';
 import Dexie from 'dexie';
+import * as drizzleReactHooks from '../drizzle-hooks';
+import Dialog from '@material-ui/core/Dialog';
+import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import { ListContext } from './ListContext';
 
 const db = new Dexie('DECERTDB');
 db.version(1).stores({
@@ -15,46 +27,90 @@ db.version(1).stores({
 const ipfs = ipfsClient('ipfs.infura.io', '5001', { protocol: 'https' });
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-export default () => {
-    const [pageNumber, setPageNumber] = useState(1);
-    const [file, setFile] = useState();
-    
-    async function handleFileChange(inputFiles) {
-        setFile(inputFiles[0]);
-        try {
-           let buffer = await readUploadedFileAsArrayBuffer(inputFiles[0]);
-           let file = await addToIpfs(ipfs, buffer);
-           db.files.add(file);
-        }
-        catch(err) {
-            console.log(err);
-        }
-    }
-
-    async function handleSaveFile(inputFiles) {
-        try {
-           let buffer = await readUploadedFileAsArrayBuffer(inputFiles[0]);
-           let file = await addToIpfs(ipfs, buffer);
-           db.files.add(file);
-        }
-        catch(err) {
-            
-        }
-    }
-
-    return (<div>
-        <Button variant="contained" component="label">
-            Upload File
-           <input type="file" style={{ display: "none" }} onChange={(e) => handleFileChange(e.target.files)} />
-        </Button>
-        <Document file={file}>
-            <Page pageNumber={pageNumber} />
-        </Document>
-    </div>)
+const styles = {
+    appBar: {
+        position: 'relative',
+    },
+    flex: {
+        flex: 1,
+    },
+};
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
 }
 
+const Create = (props) => {
+    const { classes } = props;
+    const context = useContext(ListContext);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [file, setFile] = useState();
+    const drizzleState = drizzleReactHooks.useDrizzleState(drizzleState => ({
+        accounts: drizzleState.accounts,
+        contracts: drizzleState.contracts
+    }));
+    const { drizzle } = drizzleReactHooks.useDrizzle();
 
+    function handleClose() {
+        context.setState({ openCreate: false });
+    }
+
+    async function handleFileChange(inputFiles) {
+        setFile(inputFiles[0]);
+    }
+
+    async function handleSaveFile() {
+        try {
+            let buffer = await readUploadedFileAsArrayBuffer(file);
+            let result = await addToIpfs(ipfs, buffer);
+            let hash2 = buffer2hex(await crypto.subtle.digest("SHA-256", result.hash));
+            let ipfs_hash = base582hex(result.ipfs_hash);
+            let created_at = Math.floor(Date.now() / 1000);
+            await drizzle.contracts.CertificateStorage.methods
+                .createCertificate(hash2, ipfs_hash, created_at)
+                .send(drizzleState.accounts[0]);
+            db.files.add({ id: result.hash, created_at: created_at });
+            context.setState({ openCreate: false });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    return (
+        <Dialog
+            fullScreen
+            open={context.openCreate}
+            onClose={handleClose}
+            TransitionComponent={Transition}
+        >
+            <AppBar className={classes.appBar}>
+                <Toolbar>
+                    <IconButton color="inherit" onClick={handleClose} aria-label="Close">
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit" className={classes.flex}>
+
+                    </Typography>
+                    <Button color="inherit" onClick={() => { handleSaveFile() }}>
+                        Save
+                   </Button>
+                </Toolbar>
+            </AppBar>
+            <Grid container justify="center">
+                <Button variant="contained" component="label">
+                    Upload File
+                   <input type="file"
+                        style={{ display: "none" }}
+                        onChange={(e) => handleFileChange(e.target.files)} />
+                </Button>
+                <Document file={file}>
+                    <Page pageNumber={pageNumber} />
+                </Document>
+            </Grid>
+        </Dialog>)
+}
+
+export default withStyles(styles)(Create);
 
 
 
@@ -84,16 +140,16 @@ export default () => {
         }
         return ab;
     }
-    
+
     const readUploadedFileAsArrayBuffer = inputFile => {
         const temporaryFileReader = new FileReader();
-    
+
         return new Promise((resolve, reject) => {
           temporaryFileReader.onerror = () => {
             temporaryFileReader.abort();
             reject(new DOMException("Problem parsing input file."));
           };
-    
+
           temporaryFileReader.onload = () => {
             resolve(temporaryFileReader.result);
           };
@@ -115,7 +171,7 @@ export default () => {
                 if (err) {
                     throw err
                 }
-                decryptFile(files[0].content, x.hash).then(dec=>console.log(dec)); 
+                decryptFile(files[0].content, x.hash).then(dec=>console.log(dec));
             });
         });
         //console.log(ab2base64(x.encrypted));

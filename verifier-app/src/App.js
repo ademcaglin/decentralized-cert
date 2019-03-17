@@ -1,26 +1,29 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import QrReader from "react-qr-reader";
 
-function App () {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+export default () => {
+  const [delay, setDelay] = useState();
+  const [result, setResult] = useState();
+  const [error, setError] = useState();
+  function handleScan(hash){
+    // loading
+    if (hash) {
+       // get arraybuffer
+       // get hash2
+       // get certificate
+       // get encrypted file
+       // decrypt file
+       // set file, signer, issuer
+    }
+  }
+  <div>
+    <QrReader
+      delay={delay}
+      onError={(err) => setError(err)}
+      onScan={handleScan}
+      style={{ width: "100%" }}
+    />
+    <p>{result}</p>
+  </div>
 }
-
-export default App;

@@ -3,8 +3,8 @@ import List from './components/List';
 import Create from './components/Create';
 import Layout from './components/Layout';
 import { Route, Switch } from 'react-router-dom';
-/*import {Drizzle, generateStore} from 'drizzle';
-import { drizzleReactHooks  } from "drizzle-react";
+import { Drizzle, generateStore } from 'drizzle';
+import * as drizzleReactHooks  from './drizzle-hooks'
 import CertificateStorage from "./contracts/CertificateStorage.json";
 const options = {
   web3: {
@@ -21,19 +21,14 @@ const options = {
 };
 const drizzleStore = generateStore(options);
 const drizzle = new Drizzle(options, drizzleStore);
-<drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
-    <drizzleReactHooks.Initializer
-      error="There was an error."
-      loadingContractsAndAccounts="Also still loading."
-loadingWeb3="Still loading.">
-</drizzleReactHooks.Initializer>
-    </drizzleReactHooks.DrizzleProvider>
-*/
+
 export default () => (
-      <Layout>
-        <Switch>
-          <Route exact path='/' component={List} />
-          <Route path='/create' component={Create} />
-        </Switch>
-      </Layout>
+  <drizzleReactHooks.DrizzleProvider drizzle={drizzle}>
+    <Layout>
+      <Switch>
+        <Route exact path='/' component={List} />
+        <Route path='/create' component={Create} />
+      </Switch>
+    </Layout>
+  </drizzleReactHooks.DrizzleProvider>
 )

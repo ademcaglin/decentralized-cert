@@ -5,15 +5,20 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "bs58": "^4.0.1",
+    "de-cert-lib": "file:../../de-cert-lib/browser",
+    "debounce": "^1.2.0",
     "dexie": "^2.0.4",
     "drizzle": "^1.2.4",
-    "drizzle-react": "^1.2.0",
     "ipfs-http-client": "^29.1.1",
+    "qrcode.react": "^0.9.3",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-pdf": "^4.0.5",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "shallowequal": "^1.1.0",
+    "emotion": "9.2.12"
   },
   "scripts": {
     "start": "react-scripts start",

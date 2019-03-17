@@ -1,4 +1,4 @@
-pragma solidity >=0.4.21 <0.6.0;
+/*pragma solidity >=0.4.21 <0.6.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
@@ -14,11 +14,11 @@ contract TestCertificateStorage {
       CertificateStorage certificateStorage = CertificateStorage(DeployedAddresses.CertificateStorage());
       string memory title;
       bytes32 issuer;
-      uint created_at;
-      uint disabled_at;
-      (created_at, disabled_at, title, issuer) = certificateStorage.signers(certificateStorage.owner());
+      uint dateOfCreation;
+      uint dateOfRevocation;
+      (dateOfCreation, dateOfRevocation, title, issuer) = certificateStorage.signers(certificateStorage.owner());
       string memory expected = "Owner";
-      Assert.isNotZero(created_at, "The signer created_at is zero");
+      Assert.isNotZero(dateOfCreation, "The signer is not created");
       Assert.equal(title, expected, "The signer is not created");
    }
    
@@ -26,15 +26,15 @@ contract TestCertificateStorage {
       CertificateStorage certificateStorage = CertificateStorage(DeployedAddresses.CertificateStorage());
       bytes32 issuerId = stringToBytes32("DECENTRALIZED_ISSUER");
       string memory title;
-      uint created_at;
-      uint disabled_at;
+      uint dateOfCreation;
+      uint dateOfRevocation;
       address admin;
-      (created_at, disabled_at, title, admin) = certificateStorage.issuers(issuerId);
+      (dateOfCreation, dateOfRevocation, title, admin) = certificateStorage.issuers(issuerId);
       string memory expected = "Decentralized Certificate Issuer";
-      Assert.isNotZero(created_at, "The created_at is zero");
+      Assert.isNotZero(dateOfCreation, "The issuer is not created");
       Assert.equal(title, expected, "The issuer is not created");
-      Assert.equal(admin, msg.sender, "The issuer's admin is not created");
-   }
+      Assert.equal(admin, msg.sender, "The issuer is not created");
+   }*/
 
    /*function testCertificateShouldBeCreated() public {
       CertificateStorage certificateStorage = CertificateStorage(DeployedAddresses.CertificateStorage());
@@ -77,7 +77,7 @@ contract TestCertificateStorage {
       //    "It should store authority_title");
    }*/
 
-   function stringToBytes32(string memory source) public returns (bytes32 result) {
+   /*function stringToBytes32(string memory source) public returns (bytes32 result) {
         bytes memory tempEmptyStringTest = bytes(source);
         if (tempEmptyStringTest.length == 0) {
             return 0x0;
@@ -105,4 +105,4 @@ contract TestCertificateStorage {
         return string(bytesStringTrimmed);
     }
 
-}
+}*/
