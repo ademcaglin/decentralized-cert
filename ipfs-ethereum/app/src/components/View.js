@@ -8,21 +8,28 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 import { ListContext } from './ListContext';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-
-const styles = {
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+  },
   appBar: {
     position: 'relative',
   },
   flex: {
     flex: 1,
   },
-};
+});
+
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -50,14 +57,26 @@ const View = (props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.flex}>
-            
+          
           </Typography>
         </Toolbar>
       </AppBar>
       <Grid container justify="center">
-        <Document file={context.viewFile}>
+      <Paper className={classes.root} elevation={1}>
+        <Typography variant="h5" component="h3">
+        {context.viewCer.issuer}
+        </Typography>
+        <Typography component="p">
+          {context.viewCer.date_of_issue}
+        </Typography>
+        <Divider variant="left" />
+        <Document file={context.viewCer.file}>
           <Page pageNumber={pageNumber} />
         </Document>
+      </Paper>
+      </Grid>
+      <Grid container justify="center">
+        
       </Grid>
     </Dialog>
   );

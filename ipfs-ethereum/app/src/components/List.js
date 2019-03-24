@@ -47,17 +47,13 @@ function List(props) {
     },
     {
       openView: false,
-      viewFile: [],
+      viewCer: {},
       openCreate: false
     }
   );
 
-  const contextValue = useMemo(
-    () => ({
-      ...state,
-      setState
-    }),
-    [state.openView, state.viewFile, state.openCreate]
+  const contextValue = useMemo(() => ({...state, setState}),
+    [state.openView, state.viewCer, state.openCreate]
   );
 
   useEffect(() => {
@@ -73,9 +69,11 @@ function List(props) {
     setState({ openView: true });
     let hash2 = buffer2hex(await crypto.subtle.digest("SHA-256", hash));
     let cer = await drizzle.contracts.CertificateStorage.methods.getCertificate(hash2).call();
-    let ipfs_hash = hex2base58(cer[2]);
+    let ipfs_hash = hex2base58(cer[1]);
+    let date_of_issue = new Date(cer[0] * 1000).toString(); 
+    let issuer = cer[2];
     let file = await getFromIpfs(ipfs, ipfs_hash, hash);
-    setState({ viewFile: file });
+    setState({ viewCer: { file : file, date_of_issue: date_of_issue, issuer: issuer } });
   }
 
   async function handleCreate() {

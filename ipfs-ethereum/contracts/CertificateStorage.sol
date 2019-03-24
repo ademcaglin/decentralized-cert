@@ -90,12 +90,11 @@ contract CertificateStorage {
         return(signer.certificateKeys);
     }
   
-    function getCertificate(bytes32 id)public view returns(address,uint,bytes32,string memory,uint){
+    function getCertificate(bytes32 id)public view returns(uint,bytes32,string memory,uint){
         Certificate memory cer = certificates[id];
         Signer memory signer = signers[cer.signer];
         Issuer memory issuer = issuers[signer.issuer];
-        return(cer.signer,
-        cer.dateOfIssue,
+        return(cer.dateOfIssue,
         cer.ipfsHash,
         issuer.title,
         cer.dateOfRevocation);

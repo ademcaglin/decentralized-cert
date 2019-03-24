@@ -6,9 +6,11 @@ export default () => {
   const [delay, setDelay] = useState();
   const [result, setResult] = useState();
   const [error, setError] = useState();
-  function handleScan(hash){
+  
+  async function handleScan(hash){
     // loading
     if (hash) {
+      setResult(hash);
        // get arraybuffer
        // get hash2
        // get certificate
@@ -17,6 +19,8 @@ export default () => {
        // set file, signer, issuer
     }
   }
+
+  return (
   <div>
     <QrReader
       delay={delay}
@@ -26,4 +30,5 @@ export default () => {
     />
     <p>{result}</p>
   </div>
+  );
 }
