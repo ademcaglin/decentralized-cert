@@ -1,0 +1,277 @@
+[
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "key",
+        "type": "address"
+      },
+      {
+        "name": "date_of_creation",
+        "type": "uint256"
+      },
+      {
+        "name": "issuer_key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "createSigner",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "key",
+        "type": "address"
+      }
+    ],
+    "name": "getSignerCertificateKeys",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "key",
+        "type": "bytes32"
+      },
+      {
+        "name": "ipfs_hash",
+        "type": "bytes32"
+      },
+      {
+        "name": "date_of_issue",
+        "type": "uint256"
+      }
+    ],
+    "name": "createCertificate",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "signers",
+    "outputs": [
+      {
+        "name": "dateOfCreation",
+        "type": "uint256"
+      },
+      {
+        "name": "dateOfInactivating",
+        "type": "uint256"
+      },
+      {
+        "name": "issuer",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "certificates",
+    "outputs": [
+      {
+        "name": "signer",
+        "type": "address"
+      },
+      {
+        "name": "dateOfIssue",
+        "type": "uint256"
+      },
+      {
+        "name": "dateOfRevocation",
+        "type": "uint256"
+      },
+      {
+        "name": "ipfsHash",
+        "type": "bytes32"
+      },
+      {
+        "name": "properties",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "issuerKeys",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "issuers",
+    "outputs": [
+      {
+        "name": "dateOfCreation",
+        "type": "uint256"
+      },
+      {
+        "name": "dateOfInactivating",
+        "type": "uint256"
+      },
+      {
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "name": "certificateType",
+        "type": "bytes32"
+      },
+      {
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getIssuerSignerKeys",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "name": "certificate_type",
+        "type": "bytes32"
+      },
+      {
+        "name": "admin",
+        "type": "address"
+      },
+      {
+        "name": "date_of_creation",
+        "type": "uint256"
+      }
+    ],
+    "name": "createIssuer",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getCertificate",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "name": "",
+        "type": "bytes32"
+      },
+      {
+        "name": "",
+        "type": "string"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  }
+]

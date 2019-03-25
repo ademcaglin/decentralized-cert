@@ -1,34 +1,16 @@
-import React, { useState } from 'react';
-import './App.css';
-import QrReader from "react-qr-reader";
+import React from "react";
+import { useStore } from "./store/useStore";
 
-export default () => {
-  const [delay, setDelay] = useState();
-  const [result, setResult] = useState();
-  const [error, setError] = useState();
-  
-  async function handleScan(hash){
-    // loading
-    if (hash) {
-      setResult(hash);
-       // get arraybuffer
-       // get hash2
-       // get certificate
-       // get encrypted file
-       // decrypt file
-       // set file, signer, issuer
-    }
+import Scan from "./Scan";
+import View from "./View";
+
+const App = props => {
+  const { state } = useStore();
+  let page = <Scan />;
+  if (state.currentPage === "view") {
+    page = <View />;
   }
+  return page;
+};
 
-  return (
-  <div>
-    <QrReader
-      delay={delay}
-      onError={(err) => setError(err)}
-      onScan={handleScan}
-      style={{ width: "100%" }}
-    />
-    <p>{result}</p>
-  </div>
-  );
-}
+export default App;
