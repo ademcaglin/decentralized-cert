@@ -1,18 +1,11 @@
-async function getEncryptedArrayBuffer(arrayBuffer){
-    let hash = await crypto.subtle.digest("SHA-256", arrayBuffer);
-    let key = await crypto.subtle.importKey("raw", hash, "aes-ctr", false, ["encrypt"]);
-    let iv = hash.slice(0, 16);
-    let encrypted = await crypto.subtle.encrypt({name: "aes-ctr", counter: iv, length: 128}, key, arrayBuffer);
-    return {encrypted: encrypted, hash: hash};
-}
+import ipfsClient from 'ipfs-http-client';
+import {}
 
-async function getDecryptedArrayBuffer(hash, encrpted){
-    let key = await crypto.subtle.importKey("raw", hash, "aes-ctr", false, ["decrypt"]);
-    let iv = hash.slice(0, 16);
-    let content = await crypto.subtle.decrypt({ name: "aes-ctr", counter: iv, length: 128 }, key, encrpted);
-    return content;
-}
-async function addToIpfs(ipfs, arrayBuffer){
+async function addToIpfs(arrayBuffer){
+    const ipfs = ipfsClient("ipfs.infura.io", "5001", {
+       protocol: "https"
+    });
+
     let data = await getEncryptedArrayBuffer(arrayBuffer);
     let buf = ipfs.types.Buffer.from(data.encrypted);
     return new Promise((resolve, reject) => {
@@ -25,7 +18,10 @@ async function addToIpfs(ipfs, arrayBuffer){
     });   
 } 
 
-async function getFromIpfs(ipfs, ipfs_hash, hash){ 
+async function getFromIpfs(ipfs_hash, hash){ 
+    const ipfs = ipfsClient("ipfs.infura.io", "5001", {
+       protocol: "https"
+    });
     return new Promise((resolve, reject) => {
         ipfs.get(ipfs_hash, (err, files) => {
             if (err) {

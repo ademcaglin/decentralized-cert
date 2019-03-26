@@ -16,15 +16,10 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { ListContext } from "./ListContext";
-import ipfsClient from 'ipfs-http-client';
 
 const db = new Dexie("DECERTDB");
 db.version(1).stores({
   files: "id"
-});
-
-const ipfs = ipfsClient("ipfs.infura.io", "5001", {
-  protocol: "https"
 });
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${
@@ -59,7 +54,7 @@ const Create = props => {
   async function handleSaveFile() {
     try {
       let buffer = await readUploadedFileAsArrayBuffer(file);
-      let result = await addToIpfs(ipfs, buffer);
+      let result = await addToIpfs(buffer);
       let hash2 = buffer2hex(
         await crypto.subtle.digest("SHA-256", result.hash)
       );
