@@ -19,7 +19,7 @@ export const reducer = (state, action) => {
                 hasSignerAccount: true,
                 web3: action.web3,
                 account: action.account,
-                contract: action.account
+                contract: action.contract
             };
         case "ADD_CERTIFICATE":
             return {

@@ -6,14 +6,10 @@ import List from "./components/List";
 import Create from "./components/Create";
 import Layout from "./components/Layout";
 import { Route, Switch } from "react-router-dom";
-import getWeb3 from "./core/getWeb3";
 import { reducer, initialState, AppContext } from "./store";
 
 function App() {
   const [store, dispatch] = useReducer(reducer, initialState);
-  useEffect(() => {
-    getWeb3();
-  });
   return (
     <AppContext.Provider value={{ store, dispatch }}>
       <Layout>

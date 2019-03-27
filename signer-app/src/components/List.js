@@ -11,7 +11,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import QRCode from "qrcode.react";
 import { AppContext } from "../store";
-import useCreateCertificate from "../hooks/useCreateCertificate";
 
 const styles = theme => ({
   root: {
@@ -33,8 +32,8 @@ function List(props) {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>FILE HASH</TableCell>
               <TableCell align="left">DATE OF CREATION</TableCell>
+              <TableCell>FILE HASH</TableCell>
               <TableCell align="right" />
             </TableRow>
           </TableHead>
