@@ -8,12 +8,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { ListContext } from './ListContext';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
 
 const styles = {
   appBar: {
@@ -31,16 +29,15 @@ function Transition(props) {
 const View = (props) => {
   const { classes } = props;
   const [pageNumber, setPageNumber] = useState(1);
-  const context = useContext(ListContext);
-
+ 
   function handleClose() {
-    context.setState({ openView: false });
+    //context.setState({ openView: false });
   }
 
   return (
     <Dialog
       fullScreen
-      open={context.openView}
+      open={false}
       onClose={handleClose}
       TransitionComponent={Transition}
     >
@@ -55,7 +52,7 @@ const View = (props) => {
         </Toolbar>
       </AppBar>
       <Grid container justify="center">
-        <Document file={context.viewFile}>
+        <Document file={null}>
           <Page pageNumber={pageNumber} />
         </Document>
       </Grid>
