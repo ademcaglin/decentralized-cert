@@ -1,4 +1,3 @@
-
 import React, {memo, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
-import useWeb3 from "../core/useWeb3";
 
 const styles = {
   root: {
@@ -28,10 +26,6 @@ const styles = {
 
 const Layout = memo(props => {
   const { classes } = props;
-  const {setWeb3} = useWeb3();
-  useEffect(() => {
-    setWeb3();
-  });
   return (
     <div className={classes.root}>
       <AppBar position="static">

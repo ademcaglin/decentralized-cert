@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { AppContext } from "../store";
-import { addToIpfs } from "./ipfsUtils";
+import { addToIpfs } from "../utils/ipfsUtils";
 import readUploadedFileAsArrayBuffer from "../utils/fileUtils";
-import {ab2base64} from "../utils/baseUtils";
+import { ab2base64 } from "../utils/baseUtils";
 
 export default () => {
     const { store, dispatch } = useContext(AppContext);
@@ -20,5 +20,5 @@ export default () => {
         });
     }
 
-    return {addCertificate};
+    return { addCertificate };
 }

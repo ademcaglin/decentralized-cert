@@ -4,8 +4,7 @@ import { Button } from "@material-ui/core";
 import { Document, Page } from "react-pdf";
 import { pdfjs } from "react-pdf";
 import Grid from "@material-ui/core/Grid";
-import { AppContext } from "../store";
-import useCreateCertificate from "../core/useCreateCertificate";
+import useCertificate from "../core/useCertificate";
 import { withRouter } from 'react-router-dom';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveIcon from '@material-ui/icons/Save';
@@ -36,12 +35,13 @@ const Create = props => {
   const { classes } = props;
   const [pageNumber, setPageNumber] = useState(1);
   const [file, setFile] = useState();
-  const { store, dispatch } = useContext(AppContext);
-  const { addCertificate } = useCreateCertificate();
+  const { addCertificate } = useCertificate();
+
   async function handleSave() {
     await addCertificate(file);
     props.history.push(`/`);
   }
+
   return (
     <React.Fragment>
       <Grid container justify="center">
@@ -66,8 +66,6 @@ const Create = props => {
             <CloudUploadIcon className={classes.rightIcon} />
           </Button>
         }
-
-
       </Grid>
       <Grid container justify="center">
         <Document file={file}>

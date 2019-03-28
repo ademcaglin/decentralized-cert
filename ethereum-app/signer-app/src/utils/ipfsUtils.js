@@ -1,5 +1,5 @@
 import ipfsClient from 'ipfs-http-client';
-import { getEncryptedArrayBuffer, getDecryptedArrayBuffer } from "../utils/cryptoUtils";
+import { getEncryptedArrayBuffer, getDecryptedArrayBuffer } from "./cryptoUtils";
 
 const ipfs = ipfsClient("ipfs.infura.io", "5001", {
     protocol: "https"
@@ -7,7 +7,7 @@ const ipfs = ipfsClient("ipfs.infura.io", "5001", {
 
 async function addToIpfs(arrayBuffer) {
     let data = await getEncryptedArrayBuffer(arrayBuffer);
-    let buf = ipfs.types.Buffer.from(data.encrypted);
+    let buf = Buffer.from(data.encrypted);
     return new Promise((resolve, reject) => {
         ipfs.add(buf, (err, result) => {
             if (err) {
