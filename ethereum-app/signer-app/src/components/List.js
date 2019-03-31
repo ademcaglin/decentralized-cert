@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,6 +11,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import QRCode from "qrcode.react";
 import { AppContext } from "../store";
+import View from "./View";
+import useGetCertificate from "../core/useGetCertificate";
 
 const styles = theme => ({
   root: {
@@ -26,6 +28,15 @@ const styles = theme => ({
 function List(props) {
   const { classes } = props;
   const { store, dispatch } = useContext(AppContext);
+  const [selectedHash, setSelectedHash] = useState();
+  async function openView(hash){
+    setSelectedHash(hash);
+  }
+
+  function closeView(){
+    setSelectedHash('');
+  }
+
   return (
     <React.Fragment>
       <Paper className={classes.root}>
@@ -42,11 +53,11 @@ function List(props) {
               return (
                 <TableRow key={cer.id}>
                   <TableCell component="th" scope="row">
-                    <QRCode value={cer.id} />
+                    <QRCode value={cer.hash} />
                   </TableCell>
                   <TableCell align="left">{cer.createdAt}</TableCell>
                   <TableCell align="right">
-                    <Button color="inherit" onClick={() => console.log(cer.id)}>
+                    <Button color="inherit" onClick={() => openView(cer.hash)}>
                       View
                     </Button>
                   </TableCell>
@@ -59,6 +70,7 @@ function List(props) {
       <IconButton color="inherit" onClick={() => console.log("xcx")} aria-label="Create">
         <Icon className={classes.icon}>add</Icon>
       </IconButton>
+      <View selectedHash={selectedHash} closeView={closeView} />
     </React.Fragment>
   );
 }

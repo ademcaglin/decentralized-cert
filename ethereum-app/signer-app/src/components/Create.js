@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 import { Document, Page } from "react-pdf";
 import { pdfjs } from "react-pdf";
 import Grid from "@material-ui/core/Grid";
-import useCertificate from "../core/useCertificate";
+import useCertificate from "../core/useCreateCertificate";
 import { withRouter } from 'react-router-dom';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveIcon from '@material-ui/icons/Save';

@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
+import Icon from "@material-ui/core/Icon";
 
 const styles = {
   root: {
@@ -34,10 +35,10 @@ const Layout = memo(props => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>
-              Signer Application
+              Signer App
           </Typography>
-          <Button color="inherit" component={Link} to="/">Home</Button> 
-          <Button color="inherit" component={Link} to="/create">Save Certificate</Button>    
+          <Button color="inherit" component={Link} to="/"><Icon className={classes.icon}>home</Icon></Button> 
+          <Button color="inherit" component={Link} to="/create"><Icon className={classes.icon}>add</Icon></Button>    
         </Toolbar>
       </AppBar>
       {props.children}

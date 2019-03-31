@@ -85,6 +85,11 @@ contract CertificateStorage {
         return(issuer.signerKeys);
     }
 
+    function isValidSigner(address key)public view returns(bool){
+        Signer memory signer = signers[key]; 
+        return signer.dateOfCreation != 0 && signer.dateOfInactivating == 0;
+    }
+
     function getSignerCertificateKeys(address key)public view returns(bytes32[] memory){
         Signer memory signer = signers[key];  
         return(signer.certificateKeys);

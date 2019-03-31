@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/truffle-box/drizzle-box#readme",
   "dependencies": {
+    "bs58": "^4.0.1",
     "openzeppelin-solidity": "^2.1.1",
-    "bs58": "^4.0.1"
+    "truffle-hdwallet-provider": "^1.0.6"
   }
 }
