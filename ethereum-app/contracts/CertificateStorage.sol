@@ -39,44 +39,44 @@ contract CertificateStorage {
         createSigner(owner, now, keccak256(bytes(issuerTitle)));
     }
 
-    function createIssuer(string memory title, bytes32 certificate_type, address admin, uint date_of_creation) public{
+    function createIssuer(string memory title, bytes32 certificateType, address admin, uint dateOfCreation) public{
         bytes32 key = keccak256(bytes(title));
         require(owner == msg.sender, "The message sender does not have permission"); 
         require(issuers[key].dateOfCreation == 0, "The issuer already exists");
-        checkDate(date_of_creation);
+        checkDate(dateOfCreation);
         Issuer storage issuer = issuers[key];
         issuer.title = title;
-        issuer.dateOfCreation = date_of_creation;
+        issuer.dateOfCreation = dateOfCreation;
         issuer.admin = admin;
-        issuer.certificateType = certificate_type;
+        issuer.certificateType = certificateType;
         issuerKeys.push(key);
     }
 
-    function createSigner(address key, uint date_of_creation, bytes32 issuer_key) public {
-        Issuer storage issuer = issuers[issuer_key];
+    function createSigner(address key, uint dateOfCreation, bytes32 issuerKey) public {
+        Issuer storage issuer = issuers[issuerKey];
         require(issuer.dateOfCreation != 0, "The issuer does not found");
         require(issuer.admin == msg.sender, "The sender does not have permission");
         Signer memory exist = signers[key];
         require(exist.dateOfCreation == 0, "The signer already exists");
-        checkDate(date_of_creation);
+        checkDate(dateOfCreation);
         Signer storage signer = signers[key];
-        signer.dateOfCreation = date_of_creation;
-        signer.issuer = issuer_key;
+        signer.dateOfCreation = dateOfCreation;
+        signer.issuer = issuerKey;
         issuer.signerKeys.push(key);   
     }
 
-    function createCertificate(bytes32 key, bytes32 ipfs_hash, uint date_of_issue) public {
+    function createCertificate(bytes32 key, bytes32 ipfsHash, uint dateOfIssue) public {
         Signer storage signer = signers[msg.sender];
         require(signer.dateOfCreation != 0, "The signer is not trusted");
         require(signer.dateOfInactivating == 0, "The signer is not valid");
         Issuer memory issuer = issuers[signer.issuer];
         require(issuer.dateOfCreation != 0, "The signer has not issuer");
         require(issuer.dateOfInactivating == 0, "The signer has not a valid issuer");
-        checkDate(date_of_issue);
+        checkDate(dateOfIssue);
         Certificate storage cer = certificates[key];
         cer.signer = msg.sender;
-        cer.dateOfIssue = date_of_issue;
-        cer.ipfsHash = ipfs_hash;
+        cer.dateOfIssue = dateOfIssue;
+        cer.ipfsHash = ipfsHash;
         signer.certificateKeys.push(key);
     }
 

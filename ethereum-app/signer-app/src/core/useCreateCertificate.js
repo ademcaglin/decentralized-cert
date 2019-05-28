@@ -17,10 +17,10 @@ export default () => {
         let arrayBuffer = await readUploadedFileAsArrayBuffer(file);
         let hash = await crypto.subtle.digest("SHA-256", arrayBuffer);
         let hash2 = await crypto.subtle.digest("SHA-256", hash);
-        let ipfs_hash = await addToIpfs(arrayBuffer);
-        let created_at = Math.floor(Date.now() / 1000);
+        let ipfsHash = await addToIpfs(arrayBuffer);
+        let dateOfCreation = Math.floor(Date.now() / 1000);
         await drizzle.contracts.CertificateStorage.methods
-            .createCertificate(buffer2hex(hash2), base582hex(ipfs_hash), created_at)
+            .createCertificate(buffer2hex(hash2), base582hex(ipfsHash), dateOfCreation)
             .send(drizzleState.accounts[0]);
         dispatch({
             type: "ADD_CERTIFICATE",
